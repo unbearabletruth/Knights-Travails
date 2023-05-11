@@ -1,7 +1,3 @@
-
-let start = [0, 0];
-let end = [7, 3];
-
 class Square {
     constructor(x, y, dist, path){
         this.x = x;
@@ -36,40 +32,47 @@ class Board {
     }
 }
 
-const moves = {
-    move1: [1, 2],
-    move2: [2, 1],
-    move3: [2, -1],
-    move4: [1, -2],
-    move5: [-1, -2],
-    move6: [-2, -1],
-    move7: [-2, 1],
-    move8: [-1, 2]
-}
+class Knight {
+    constructor(start, end){
+        this.start = start;
+        this.end = end;
+        this.moves = {
+            move1: [1, 2],
+            move2: [2, 1],
+            move3: [2, -1],
+            move4: [1, -2],
+            move5: [-1, -2],
+            move6: [-2, -1],
+            move7: [-2, 1],
+            move8: [-1, 2]
+        }
+    }
 
-function knightMoves(start, end){
-    let queue = [];
-    let x = start[0];
-    let y = start[1];
-    queue.push(new Square(x, y, 0, `${[x, y]}`))
-    while (queue !== null){
-        let current = queue.shift();
-        if (current.x === end[0] && current.y === end[1]){
-            return `steps: ${current.dist}; path: ${current.path}`;
-        } 
-        for (let move in moves) {
-            x = current.x + moves[move][0];
-            y = current.y + moves[move][1];
-            if (chess.insideBoard(current.x, current.y, moves[move]) !== false && chess.board[x][y] !== true){
-                queue.push(new Square(x, y, current.dist + 1, `${current.path} => ${[x, y]}`));
-                chess.board[x][y] = true;
+    knightMoves(){
+        let queue = [];
+        let x = this.start[0];
+        let y = this.start[1];
+        queue.push(new Square(x, y, 0, `${[x, y]}`))
+        while (queue !== null){
+            let current = queue.shift();
+            if (current.x === this.end[0] && current.y === this.end[1]){
+                return `steps: ${current.dist}; path: ${current.path}`;
             } 
+            for (let move in this.moves) {
+                x = current.x + this.moves[move][0];
+                y = current.y + this.moves[move][1];
+                if (chess.insideBoard(current.x, current.y, this.moves[move]) !== false && chess.board[x][y] !== true){
+                    queue.push(new Square(x, y, current.dist + 1, `${current.path} => ${[x, y]}`));
+                    chess.board[x][y] = true;
+                } 
+            }
         }
     }
 }
 
+
 let chess = new Board(8);
 chess.createBoard();
-console.log()
-console.log(knightMoves(start, end))
+let path = new Knight([0, 0], [7, 3])
+console.log(path.knightMoves())
 
