@@ -7,9 +7,16 @@
 let board = [];
 let boardSize = 8;
 let start = [0, 0];
-let end = [4, 4];
+let end = [3, 3];
 
-
+class Square {
+    constructor(x, y, dist, path){
+        this.x = x;
+        this.y = y;
+        this.dist = dist;
+        this.path = path;
+    }
+}
 
 
 for (let i = 0; i < boardSize - 1; i++) {
@@ -32,9 +39,9 @@ const moves = {
     move8: [-1, 2]
 }
 
-function isInsideBoard(start, end, boardSize){
-    if (start[0] + end[0] > boardSize - 1 || start[0] + end[0] < 0 ||
-        start[1] + end[1] > boardSize - 1 || start[1] + end[1] < 0){
+function isInsideBoard(startX, startY, end, boardSize){
+    if (startX + end[0] > boardSize - 1 || startX + end[0] < 0 ||
+        startY + end[1] > boardSize - 1 || startY + end[1] < 0){
         return false;
     }
     return true;
@@ -42,29 +49,17 @@ function isInsideBoard(start, end, boardSize){
 
 function knightMoves(start, end){
     let queue = [];
-    let counter = 0;
-    queue.push(start)
+    queue.push(new Square(start[0], start[1], 0, `${[start[0], start[1]]}`))
     while (queue !== null){
-        counter ++;
         current = queue.shift();
-        console.log("before x y", current)
-        let x = current[0];
-        let y = current[1];
-
-        if (current === end){
-            return current;
-        }
+        if (current.x === end[0] && current.y === end[1]){
+            return `steps: ${current.dist}; path: ${current.path}`;
+        } 
         for (let move in moves) {
-            if (isInsideBoard(current, moves[move], boardSize) !== false && board[x + moves[move][0]][y + moves[move][1]] !== true){
-                queue.push([x + moves[move][0], y + moves[move][1]]);
-                console.log([x + moves[move][0], y + moves[move][1]])
-                //console.log(queue)
-                board[x + moves[move][0]][y + moves[move][1]] = true;
-            }
-            if (x + moves[move][0] === end[0] && y + moves[move][1] === end[1]){
-                return counter;
-            }
-            
+            if (isInsideBoard(current.x, current.y, moves[move], boardSize) !== false && board[current.x + moves[move][0]][current.y + moves[move][1]] !== true){
+                queue.push(new Square(current.x + moves[move][0], current.y + moves[move][1], current.dist + 1, `${current.path} => ${[current.x + moves[move][0], current.y + moves[move][1]]}`));
+                board[current.x + moves[move][0]][current.y + moves[move][1]] = true;
+            } 
         }
     }
 }
