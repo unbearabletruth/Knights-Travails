@@ -31,6 +31,14 @@ class Board {
             }
         }
     }
+
+    isInsideBoard(startX, startY, step){
+        if (startX + step[0] > this.boardSize - 1 || startX + step[0] < 0 ||
+            startY + step[1] > this.boardSize - 1 || startY + step[1] < 0){
+            return false;
+        }
+        return true;
+    }
 }
 
 
@@ -45,13 +53,7 @@ const moves = {
     move8: [-1, 2]
 }
 
-function isInsideBoard(startX, startY, step, boardSize){
-    if (startX + step[0] > boardSize - 1 || startX + step[0] < 0 ||
-        startY + step[1] > boardSize - 1 || startY + step[1] < 0){
-        return false;
-    }
-    return true;
-}
+
 
 function knightMoves(start, end){
     let queue = [];
@@ -62,7 +64,7 @@ function knightMoves(start, end){
             return `steps: ${current.dist}; path: ${current.path}`;
         } 
         for (let move in moves) {
-            if (isInsideBoard(current.x, current.y, moves[move], chessBoard.boardSize) !== false && chessBoard.board[current.x + moves[move][0]][current.y + moves[move][1]] !== true){
+            if (chessBoard.isInsideBoard(current.x, current.y, moves[move]) !== false && chessBoard.board[current.x + moves[move][0]][current.y + moves[move][1]] !== true){
                 queue.push(new Square(current.x + moves[move][0], current.y + moves[move][1], current.dist + 1, `${current.path} => ${[current.x + moves[move][0], current.y + moves[move][1]]}`));
                 chessBoard.board[current.x + moves[move][0]][current.y + moves[move][1]] = true;
             } 
