@@ -7,7 +7,7 @@
 let board = [];
 let boardSize = 8;
 let start = [0, 0];
-let end = [3, 3];
+let end = [7, 7];
 
 class Square {
     constructor(x, y, dist, path){
@@ -19,13 +19,12 @@ class Square {
 }
 
 
-for (let i = 0; i < boardSize - 1; i++) {
+for (let i = 0; i < boardSize; i++) {
     let row = [];
     board.push(row);
-    for (let j = 0; j < boardSize - 1; j++) {
+    for (let j = 0; j < boardSize; j++) {
         board[i][j] = false;
     }
-    
 }
 
 const moves = {
@@ -39,9 +38,9 @@ const moves = {
     move8: [-1, 2]
 }
 
-function isInsideBoard(startX, startY, end, boardSize){
-    if (startX + end[0] > boardSize - 1 || startX + end[0] < 0 ||
-        startY + end[1] > boardSize - 1 || startY + end[1] < 0){
+function isInsideBoard(startX, startY, step, boardSize){
+    if (startX + step[0] > boardSize - 1 || startX + step[0] < 0 ||
+        startY + step[1] > boardSize - 1 || startY + step[1] < 0){
         return false;
     }
     return true;
