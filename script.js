@@ -7,7 +7,7 @@
 let board = [];
 let boardSize = 8;
 let start = [0, 0];
-let end = [3, 3];
+let end = [4, 4];
 
 
 
@@ -41,34 +41,33 @@ function isInsideBoard(start, end, boardSize){
 }
 
 function knightMoves(start, end){
-    
+    let queue = [];
+    let counter = 0;
     queue.push(start)
-    let x = start[0];
-    let y = start[1];
-    board[x][y] = true;
     while (queue !== null){
+        counter ++;
         current = queue.shift();
+        console.log("before x y", current)
+        let x = current[0];
+        let y = current[1];
+
         if (current === end){
             return current;
         }
         for (let move in moves) {
-            if (isInsideBoard(current, moves[move], boardSize) !== false){
-                queue.push([current[0] + moves[move][0], current[1] + moves[move][1]])
+            if (isInsideBoard(current, moves[move], boardSize) !== false && board[x + moves[move][0]][y + moves[move][1]] !== true){
+                queue.push([x + moves[move][0], y + moves[move][1]]);
+                console.log([x + moves[move][0], y + moves[move][1]])
+                //console.log(queue)
+                board[x + moves[move][0]][y + moves[move][1]] = true;
             }
-            if (current[0] + moves[move][0] === end[0] && current[1] + moves[move][1] === end[1]){
-                return "hey"
+            if (x + moves[move][0] === end[0] && y + moves[move][1] === end[1]){
+                return counter;
             }
             
         }
     }
 }
 
-//knightMoves(start, end)
-let queue = [];
-queue.push(start)
-current = queue.shift();
-for (let move in moves) {
-    if (isInsideBoard(current, moves[move], boardSize) !== false){
-        queue.push([current[0] + moves[move][0], current[1] + moves[move][1]])
-    }}
-console.log(queue)
+console.log(knightMoves(start, end))
+
