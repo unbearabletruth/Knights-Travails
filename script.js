@@ -4,8 +4,6 @@
 //end position
 //borders you can't go beyond
 //searching algorithm
-let board = [];
-let boardSize = 8;
 let start = [0, 0];
 let end = [7, 7];
 
@@ -18,14 +16,23 @@ class Square {
     }
 }
 
+class Board {
+    constructor(boardSize){
+        this.board = [];
+        this.boardSize = boardSize;
+    }
 
-for (let i = 0; i < boardSize; i++) {
-    let row = [];
-    board.push(row);
-    for (let j = 0; j < boardSize; j++) {
-        board[i][j] = false;
+    createBoard(){
+        for (let i = 0; i < this.boardSize; i++) {
+            let row = [];
+            this.board.push(row);
+            for (let j = 0; j < this.boardSize; j++) {
+                this.board[i][j] = false;
+            }
+        }
     }
 }
+
 
 const moves = {
     move1: [1, 2],
@@ -55,13 +62,16 @@ function knightMoves(start, end){
             return `steps: ${current.dist}; path: ${current.path}`;
         } 
         for (let move in moves) {
-            if (isInsideBoard(current.x, current.y, moves[move], boardSize) !== false && board[current.x + moves[move][0]][current.y + moves[move][1]] !== true){
+            if (isInsideBoard(current.x, current.y, moves[move], chessBoard.boardSize) !== false && chessBoard.board[current.x + moves[move][0]][current.y + moves[move][1]] !== true){
                 queue.push(new Square(current.x + moves[move][0], current.y + moves[move][1], current.dist + 1, `${current.path} => ${[current.x + moves[move][0], current.y + moves[move][1]]}`));
-                board[current.x + moves[move][0]][current.y + moves[move][1]] = true;
+                chessBoard.board[current.x + moves[move][0]][current.y + moves[move][1]] = true;
             } 
         }
     }
 }
 
+let chessBoard = new Board(8);
+chessBoard.createBoard();
+console.log()
 console.log(knightMoves(start, end))
 
