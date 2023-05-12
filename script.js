@@ -48,7 +48,7 @@ class Knight {
         }
     }
 
-    knightMoves(){
+    knightMoves(chess){
         let queue = [];
         let x = this.start[0];
         let y = this.start[1];
@@ -71,48 +71,75 @@ class Knight {
 }
 
 
-export let chess = new Board(8);
-chess.createBoard();
-let path = new Knight([0, 0], [5, 1])
-let move = path.knightMoves()
-console.log(move)
-
 function getInput(){
-
+    let button = document.querySelector("button");
+    let startInput = document.querySelector("#startInput");
+    let endInput = document.querySelector("#endInput");
+    button.addEventListener("click", () => {
+        let start = startInput.value.split("").map( Number );
+        let end = endInput.value.split("").map( Number );
+        init(start, end);
+    })
 }
 
-function renderBoard(){
+function init(start, end){
+    clear();
+    let chess = new Board(8);
+    chess.createBoard();
+    let path = new Knight(start, end);
+    let move = path.knightMoves(chess);
+    renderBoard(chess);
+    renderPath(move);
+    renderPathText(move);
+}
+
+function renderBoard(chess){
     const board = document.querySelector("#board");
     for (let i = chess.boardSize - 1; i >= 0; i--) {
         for (let j = 0; j < chess.boardSize; j++) {
             let square = document.createElement("div");
             square.classList.add("square");
             square.id = `${i}${j}`
+            if (i % 2 !== 0 && j % 2 === 0 || i % 2 === 0 && j % 2 !== 0 ){
+                square.style.backgroundColor = "#44403c";
+                square.style.color = "white";
+            }
             board.appendChild(square);
         }
     }
-    renderPath();
 }
 
-function renderPath(){
+function renderPath(move){
     let renderedPath = move;
     const numberPattern = /\d+/g;
     renderedPath = renderedPath.match(numberPattern).join('')
     renderedPath = renderedPath.substring(1).match(/.{1,2}/g);
     for (let i = 0; i < renderedPath.length; i++) {
-        let wasOn = document.getElementById(`${renderedPath[i]}`);
-        wasOn.style.backgroundColor = "red";
+        let step = document.getElementById(`${renderedPath[i]}`);
+        if (i === 0){
+            step.textContent = "Start"
+        }
+        if (i > 0 && i < renderedPath.length - 1){
+            step.textContent = `step: ${i}`;
+        }
         if (i === renderedPath.length - 1){
-            wasOn.style.backgroundImage = "url('Knight.svg')";
+            step.style.backgroundImage = "url('Knight.svg')";
         }
     }
-    renderPathText();
 }
 
-function renderPathText(){
+function renderPathText(move){
     let text = document.getElementById("header");
     text.textContent = move;
 }
 
-renderBoard()
+function clear(){
+    const board = document.querySelector("#board");
+    while (board.firstChild) {
+        board.removeChild(board.firstChild);
+    }
+}
+
+getInput();
+
 
