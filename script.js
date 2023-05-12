@@ -103,11 +103,14 @@ function renderBoard(chess){
             if (i % 2 !== 0 && j % 2 === 0 || i % 2 === 0 && j % 2 !== 0 ){
                 square.style.backgroundColor = "#44403c";
                 square.style.color = "white";
+            } else {
+                square.style.backgroundColor = "white";
             }
             board.appendChild(square);
         }
     }
 }
+
 
 function renderPath(move){
     let renderedPath = move;
@@ -130,7 +133,7 @@ function renderPath(move){
 
 function renderPathText(move){
     let text = document.getElementById("header");
-    text.textContent = move;
+    text.textContent = `shortest path is: ${move}`;
 }
 
 function clear(){
@@ -140,6 +143,8 @@ function clear(){
     }
 }
 
+let chess = new Board(8);
+renderBoard(chess);
 getInput();
 
 
