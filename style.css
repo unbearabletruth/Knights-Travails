@@ -1,5 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -7,11 +14,11 @@ body {
 
 #board {
     display: grid;
-    grid-template-columns: repeat(8, 100px);
+    grid-template-columns: repeat(8, 75px);
 }
 
 .square {
     border: 1px solid black;
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
 }

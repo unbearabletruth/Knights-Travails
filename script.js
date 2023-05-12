@@ -71,8 +71,48 @@ class Knight {
 }
 
 
-let chess = new Board(8);
+export let chess = new Board(8);
 chess.createBoard();
-let path = new Knight([0, 0], [7, 3])
-console.log(path.knightMoves())
+let path = new Knight([0, 0], [5, 1])
+let move = path.knightMoves()
+console.log(move)
+
+function getInput(){
+
+}
+
+function renderBoard(){
+    const board = document.querySelector("#board");
+    for (let i = chess.boardSize - 1; i >= 0; i--) {
+        for (let j = 0; j < chess.boardSize; j++) {
+            let square = document.createElement("div");
+            square.classList.add("square");
+            square.id = `${i}${j}`
+            board.appendChild(square);
+        }
+    }
+    renderPath();
+}
+
+function renderPath(){
+    let renderedPath = move;
+    const numberPattern = /\d+/g;
+    renderedPath = renderedPath.match(numberPattern).join('')
+    renderedPath = renderedPath.substring(1).match(/.{1,2}/g);
+    for (let i = 0; i < renderedPath.length; i++) {
+        let wasOn = document.getElementById(`${renderedPath[i]}`);
+        wasOn.style.backgroundColor = "red";
+        if (i === renderedPath.length - 1){
+            wasOn.style.backgroundImage = "url('Knight.svg')";
+        }
+    }
+    renderPathText();
+}
+
+function renderPathText(){
+    let text = document.getElementById("header");
+    text.textContent = move;
+}
+
+renderBoard()
 
