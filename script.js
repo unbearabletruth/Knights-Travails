@@ -100,7 +100,7 @@ function renderBoard(chess){
             let square = document.createElement("div");
             square.classList.add("square");
             square.id = `${i}${j}`
-            if (i % 2 !== 0 && j % 2 === 0 || i % 2 === 0 && j % 2 !== 0 ){
+            if ((i + j) % 2 == 0){
                 square.style.backgroundColor = "#44403c";
                 square.style.color = "white";
             } else {
